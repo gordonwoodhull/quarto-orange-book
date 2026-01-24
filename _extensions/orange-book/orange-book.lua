@@ -36,8 +36,8 @@ local header_filter = {
     if bookItemType == "appendix" then
       -- First appendix triggers the show rule with localized "Appendices" title
       if file.bookItemNumber == 1 or file.bookItemNumber == nil then
-        -- Get localized title from language settings (param is available via _G in extension filters)
-        local language = _G.param and _G.param("language", nil) or nil
+        -- Get localized title from language settings
+        local language = quarto.doc.language
         local appendicesTitle = (language and language["section-title-appendices"]) or "Appendices"
 
         -- Use hide-parent: true to work around orange-book bug where unnumbered headings
