@@ -9,3 +9,6 @@ contributes:
         - numbering.typ
         - page.typ
         - typst-show.typ
+      filters:
+        - path: orange-book.lua
+          at: post-quarto
