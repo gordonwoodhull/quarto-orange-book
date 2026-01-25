@@ -12,4 +12,27 @@
   let pattern = if state("appendix-state", none).get() != none { "A.1a" } else { "1.1a" }
   numbering(pattern, chapter, n-super, subfloat-idx)
 }
-#let quarto-thmbox-args = (base: "heading", base_level: 1)
+// Theorem configuration for theorion
+// Chapter-based numbering (H1 = chapters)
+#let quarto-theorem-inherited-levels = 1
+
+// Appendix-aware theorem numbering
+#let quarto-theorem-numbering(loc) = {
+  if state("appendix-state", none).at(loc) != none { "A.1" } else { "1.1" }
+}
+
+// Theorem render function
+// Note: brand-color is not available at this point in template processing
+#let quarto-theorem-render(prefix: none, title: "", full-title: auto, body) = {
+  block(
+    width: 100%,
+    inset: (left: 1em),
+    stroke: (left: 2pt + black),
+  )[
+    #if full-title != "" and full-title != auto and full-title != none {
+      strong[#full-title]
+      linebreak()
+    }
+    #body
+  ]
+}
