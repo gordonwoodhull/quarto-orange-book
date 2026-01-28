@@ -4,8 +4,12 @@ A Quarto format extension that provides Typst book support using the [orange-boo
 
 ## Installation
 
+Orange-book is bundled with Quarto and is the default extension for Typst book projects.
+
+However, if you want to explicitly install and use this extension
+
 ```bash
-quarto add quarto-orange-book
+quarto add quarto-ext/orange-book
 ```
 
 ## Usage
@@ -16,9 +20,7 @@ In your `_quarto.yml`:
 project:
   type: book
 
-format:
-  orange-book-typst:
-    keep-typ: true
+format: orange-book-typst
 ```
 
 ## Features
@@ -31,7 +33,7 @@ format:
 ## Requirements
 
 - Quarto >= 1.9.17
-- The `orange-book` Typst package (automatically imported)
+- The `orange-book` Typst package (automatically imported and bundled with [typst-gather](https://prerelease.quarto.org/docs/advanced/typst/typst-gather.html))
 
 ## How It Works
 
