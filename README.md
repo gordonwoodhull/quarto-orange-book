@@ -4,7 +4,7 @@ A Quarto format extension that provides Typst book support using the [orange-boo
 
 ## Installation
 
-Orange-book is bundled with Quarto and is the default extension for Typst book projects.
+Orange-book will be bundled with Quarto 1.9 and will be the default extension for Typst book projects.
 
 However, if you want to explicitly install and use this extension
 
