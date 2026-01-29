@@ -55,4 +55,45 @@ $if(margin-geometry)$
   book: true,
   clearance: $margin-geometry.clearance$,
 )
+
+// Override heading styling for levels 2-4 to use marginalia for number placement.
+// Orange-book uses place(dx: -width - gap) which doesn't participate in marginalia's
+// collision avoidance. By using marginalia.note() with shift: false, heading numbers
+// become "immovable objects" that margin notes will dodge around.
+//
+// NOTE: This does NOT fix orange-book's appendices() function which sets a heading
+// numbering function that returns place() content. This causes #ref() to section
+// headings in appendices to render incorrectly (number displaced to margin).
+// That needs to be fixed upstream in orange-book.
+#show heading: it => {
+  if it.level == 1 { it } else {
+    let size = if it.level == 2 { 1.5em } else if it.level == 3 { 1.1em } else { 1em }
+    let color = if it.level < 4 { brand-color.at("primary", default: blue) } else { black }
+    let space = if it.level == 2 { 1em } else if it.level == 3 { 0.9em } else { 0.7em }
+
+    set text(size: size)
+    block[
+      #if it.numbering != none {
+        // Format number ourselves - orange-book's appendices() sets a numbering function
+        // that returns place() content, which we can't use inside marginalia.note()
+        context {
+          let nums = counter(heading).get()
+          let is-appendix = state("appendix-state", none).get() != none
+          let num-str = if is-appendix { numbering("A.1", ..nums) } else { numbering("1.1", ..nums) }
+          marginalia.note(
+            side: "left",  // Always left of heading (inner on recto, outer on verso)
+            counter: none,
+            anchor-numbering: none,
+            shift: false,  // Fixed position - margin notes will avoid this
+            alignment: "baseline",
+            text-style: (size: size, fill: color, weight: "regular"),
+            block-style: (width: 100%),
+          )[#align(right)[#num-str]]
+        }
+      }
+      #it.body
+    ]
+    v(space, weak: true)
+  }
+}
 $endif$
